@@ -13,6 +13,8 @@ module Tgen
       mc = MarlkovChain.new
       words = mc.parse(@read)
       markov_table = mc.build_table(words)
-    end
+      result = mc.buildSentense(markov_table)
+      p result
+    end 
   end
 end
