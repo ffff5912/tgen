@@ -1,42 +1,38 @@
 require 'natto'
-
+require 'pp'
 class MarlkovChain
+  MARKER_BEGIN = '__BOS__'
+  MARKER_END = '__EOS__'
+
   def initialize
-    @markov = []
-    @words = []
   end
 
   def build_table(words)
-    @markov = words.each_cons(3).to_a
+    words = [MARKER_BEGIN, *words, MARKER_END]
+    words.each_cons(3).to_a
   end
 
   def buildSentense(table)
     word1, word2 = *table.first
-    result = word1 + word2
+    text = word1 + word2
 
     loop {
-      values = search(table, word1, word2)
-      value = values[rand(0..(values.count - 1))]
-      if value == ''
-        break;
-      end
+      texts = search(table, word1, word2)
+      break if texts.empty?
+      suffix = texts[rand(texts.size)]
+      break if suffix[2] == ''
+      text += suffix[2]
+      break if suffix[2] == MARKER_END
 
-      result += value
-      word1 = word2
-      word2 = value
+      _, word1, word2 = *suffix
     }
-
-    result
+    text.sub(MARKER_BEGIN, '')
   end
 
   def search(table, word1, word2)
-    words = []
-    table.select {|row|
-      if row[0] == word1 && row[1] == word2
-        words << row[2]
-      end
+    words = table.select {|row|
+      row[0] == word1 && row[1] == word2
     }
-    words
   end
 
   def parse(text)

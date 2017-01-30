@@ -14,7 +14,6 @@ module Tgen
       words = mc.parse(@read)
       markov_table = mc.build_table(words)
       result = mc.buildSentense(markov_table)
-      p result
-    end 
+    end
   end
 end
