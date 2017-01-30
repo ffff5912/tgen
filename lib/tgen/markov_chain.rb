@@ -7,47 +7,41 @@ class MarlkovChain
   end
 
   def build_table(words)
-    words.each_cons(3) {|pre_f, pre_s, suffix|
-      @markov << [pre_f, pre_s, suffix]
-    }
-    @markov
+    @markov = words.each_cons(3).to_a
   end
 
   def buildSentense(table)
-    key = [];
-    key << table[0][0]
-    key << table[0][1]
+    word1, word2 = *table.first
+    result = word1 + word2
 
-    result = key[0] + key[1]
-
-    while true do
-      values = search(table, key)
+    loop {
+      values = search(table, word1, word2)
       value = values[rand(0..(values.count - 1))]
       if value == ''
         break;
       end
 
       result += value
-      key[0] = key[1]
-      key[1] = value
-    end
+      word1 = word2
+      word2 = value
+    }
 
     result
   end
 
-  def search(table, key)
-    values = []
-    table.each {|row|
-      if row[0] == key[0] && row[1] == key[1]
-        values << row[2]
+  def search(table, word1, word2)
+    words = []
+    table.select {|row|
+      if row[0] == word1 && row[1] == word2
+        words << row[2]
       end
     }
-    values
+    words
   end
 
   def parse(text)
     words = []
-    mecab = Natto::MeCab.new
+    mecab = Natto::MeCab.new('-Owakati')
     mecab.parse(text) {|word|
       words << word.surface
     }
