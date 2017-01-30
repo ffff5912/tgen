@@ -1,5 +1,5 @@
 require 'natto'
-require 'pp'
+
 class MarlkovChain
   MARKER_BEGIN = '__BOS__'
   MARKER_END = '__EOS__'
