@@ -26,7 +26,7 @@ class MarlkovChain
 
       _, word1, word2 = *suffix
     }
-    text.sub(MARKER_BEGIN, '')
+    text.gsub(MARKER_BEGIN, '').gsub(MARKER_END, '')
   end
 
   def search(table, word1, word2)
@@ -35,12 +35,11 @@ class MarlkovChain
     }
   end
 
+  def tagger
+    @tagger = Natto::MeCab.new('-Owakati')
+  end
+
   def parse(text)
-    words = []
-    mecab = Natto::MeCab.new('-Owakati')
-    mecab.parse(text) {|word|
-      words << word.surface
-    }
-    words
+    tagger.parse(text).split(' ')
   end
 end
