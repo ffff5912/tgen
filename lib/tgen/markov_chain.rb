@@ -20,7 +20,6 @@ class MarlkovChain
       texts = search(table, word1, word2)
       break if texts.empty?
       suffix = texts[rand(texts.size)]
-      break if suffix[2] == ''
       text += suffix[2]
       break if suffix[2] == MARKER_END
 
