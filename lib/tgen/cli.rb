@@ -1,5 +1,5 @@
 require 'tgen'
-require 'tgen/markov_chain'
+require 'tgen/markov/handler'
 require 'thor'
 
 module Tgen
@@ -10,10 +10,8 @@ module Tgen
       File.open(path) do |file|
         @read = file.read.gsub(/(\s)/,"")
       end
-      mc = MarlkovChain.new
-      words = mc.parse(@read)
-      markov_table = mc.build_table(words)
-      result = mc.buildSentense(markov_table)
+      text = Markov::Handler.new.handle(@read)
+      p text
     end
   end
 end
