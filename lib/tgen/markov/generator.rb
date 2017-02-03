@@ -9,7 +9,7 @@ module Markov
         suffix = texts[rand(texts.size)]
         text += suffix[2]
         break if suffix[2] == MARKER_END
-          _, word1, word2 = *suffix
+        _, word1, word2 = *suffix
       }
       text.gsub(MARKER_BEGIN, '').gsub(MARKER_END, '')
     end
