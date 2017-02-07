@@ -6,10 +6,10 @@ module Markov
   MARKER_BEGIN = '__BOS__'
   MARKER_END = '__EOS__'
   class Handler
-    def handle(text)
+    def handle(text, max)
       texts = Parser.new.parse(text)
       table = Table.new.build(texts)
-      text = Generator.new.generate(table)
+      text = Generator.new.generate(table, max)
     end
   end
 end
